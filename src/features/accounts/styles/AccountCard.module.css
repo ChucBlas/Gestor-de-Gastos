@@ -1,0 +1,23 @@
+.card {
+    gap: 12px;
+    display: flex;
+    flex-direction: column;
+}
+
+.actions {
+    display: flex;
+    justify-content: right;
+    gap: 10px;
+}
+
+.name {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--text);
+}
+
+.balance {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--income);
+}

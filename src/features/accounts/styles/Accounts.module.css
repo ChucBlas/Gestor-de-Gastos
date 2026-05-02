@@ -1,0 +1,18 @@
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 16px;
+}
+
+.totalBalance {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--yellow);
+}
+
+.positive {
+    color: var(--income);
+}
+.negative {
+    color: var(--expense);
+}

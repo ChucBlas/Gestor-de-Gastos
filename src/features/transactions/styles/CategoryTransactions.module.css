@@ -1,0 +1,29 @@
+.summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 4px;
+}
+
+.summaryLabel {
+    font-size: 13px;
+    color: var(--text-muted);
+    font-weight: 600;
+}
+
+.summaryLabel strong {
+    color: var(--text);
+}
+
+.total {
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.income {
+    color: var(--income);
+}
+
+.expense {
+    color: var(--expense);
+}

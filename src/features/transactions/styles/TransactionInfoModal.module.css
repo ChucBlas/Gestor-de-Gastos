@@ -1,0 +1,24 @@
+.label {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.title {
+    color: var(--text);
+    font-size: 20px;
+}
+
+.info {
+    font-size: 15px;
+    font-style: italic;
+}
+
+.income {
+    color: var(--income);
+}
+
+.expense {
+    color: var(--expense);
+}

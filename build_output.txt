@@ -1,0 +1,7 @@
+
+> tauri-app@0.1.0 build
+> tsc && vite build
+
+src/pages/CategoryMovements.tsx(7,8): error TS2307: Cannot find module '../api' or its corresponding type declarations.
+src/pages/CategoryMovements.tsx(8,32): error TS2307: Cannot find module './NewTransaction' or its corresponding type declarations.
+src/pages/CategoryMovements.tsx(33,26): error TS7006: Parameter 't' implicitly has an 'any' type.

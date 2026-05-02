@@ -1,0 +1,31 @@
+.date {
+    color: var(--text-muted);
+    white-space: nowrap;
+}
+
+.muted {
+    color: var(--text-muted);
+}
+
+.dim {
+    color: var(--text-dim);
+}
+
+.amount {
+    text-align: right;
+    font-weight: 600;
+}
+
+.income {
+    color: var(--income);
+}
+
+.expense {
+    color: var(--expense);
+}
+
+.actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 6px;
+}

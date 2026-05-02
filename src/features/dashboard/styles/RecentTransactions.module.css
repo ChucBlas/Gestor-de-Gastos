@@ -1,0 +1,107 @@
+.sectionHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+}
+
+.sectionTitle {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text);
+}
+
+.sectionLink {
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--yellow);
+    text-decoration: none;
+    transition: color var(--transition);
+}
+
+.sectionLink:hover {
+    color: var(--green-dark);
+}
+
+.empty {
+    font-size: 14px;
+    color: var(--text-muted);
+    text-align: center;
+    padding: 24px 0;
+}
+
+.list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.item {
+    background: var(--bg-card);
+    border-radius: var(--radius-sm);
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--border);
+    transition:
+        transform var(--transition),
+        box-shadow var(--transition);
+}
+
+.item:hover {
+    transform: translateX(3px);
+    box-shadow: var(--shadow);
+}
+
+.iconWrap {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+}
+
+.iconWrap.income {
+    background: var(--yellow-soft);
+}
+.iconWrap.expense {
+    background: var(--expense-soft);
+}
+
+.info {
+    flex: 1;
+    min-width: 0;
+}
+
+.name {
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.meta {
+    font-size: 11.5px;
+    color: var(--text-muted);
+    margin-top: 2px;
+}
+
+.amount {
+    font-size: 14px;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+.amount.income {
+    color: var(--yellow);
+}
+.amount.expense {
+    color: var(--expense);
+}

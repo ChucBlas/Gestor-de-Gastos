@@ -1,0 +1,30 @@
+.typeToggle {
+    display: flex;
+    gap: 8px;
+}
+
+.typeBtn {
+    flex: 1;
+    padding: 10px 0;
+    border-radius: var(--radius-xs);
+    font-family: var(--font-family);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    border: 2px solid var(--border);
+    background: transparent;
+    color: var(--text-muted);
+    transition: all var(--transition);
+}
+
+.income.selected {
+    background: var(--yellow-soft);
+    border-color: var(--yellow);
+    color: var(--yellow);
+}
+
+.expense.selected {
+    background: var(--expense-soft);
+    border-color: var(--expense);
+    color: var(--expense);
+}

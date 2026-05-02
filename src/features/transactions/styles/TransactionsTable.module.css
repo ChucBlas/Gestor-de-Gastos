@@ -1,0 +1,14 @@
+.wrap {
+    overflow-x: auto;
+    color: var(--text);
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.titles {
+    text-align: left;
+    color: var(--text);
+}

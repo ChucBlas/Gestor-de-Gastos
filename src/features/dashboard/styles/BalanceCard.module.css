@@ -1,0 +1,104 @@
+.card {
+    background: linear-gradient(
+        140deg,
+        var(--green-dark) 0%,
+        var(--green-mid) 60%,
+        var(--green-light) 100%
+    );
+    border-radius: var(--radius);
+    padding: 24px 22px 20px;
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 6px 24px rgba(26, 60, 52, 0.3);
+    min-height: 180px;
+    flex-shrink: 0;
+}
+
+.card::before {
+    content: "";
+    position: absolute;
+    top: -40px;
+    right: -40px;
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.05);
+    pointer-events: none;
+}
+
+.card::after {
+    content: "";
+    position: absolute;
+    bottom: -30px;
+    left: 30px;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.04);
+    pointer-events: none;
+}
+
+.accountFilter {
+    margin-bottom: 12px;
+}
+
+.balanceLabel {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 6px;
+}
+
+.balanceAmount {
+    font-size: 36px;
+    font-weight: 800;
+    color: var(--yellow);
+    letter-spacing: -0.5px;
+    line-height: 1.1;
+}
+
+.balanceSubtitle {
+    font-size: 11.5px;
+    color: rgba(255, 255, 255, 0.5);
+    margin-top: 6px;
+}
+
+.row {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 18px;
+    padding-top: 16px;
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.mini {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.right {
+    text-align: right;
+}
+
+.miniLabel {
+    font-size: 10.5px;
+    color: rgba(255, 255, 255, 0.55);
+    font-weight: 500;
+}
+
+.miniVal {
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.income {
+    color: var(--yellow);
+}
+
+.expenseVal {
+    color: rgba(255, 255, 255, 0.85);
+}

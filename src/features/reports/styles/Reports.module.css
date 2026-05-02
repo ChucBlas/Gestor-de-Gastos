@@ -1,0 +1,82 @@
+:global(.recharts-wrapper) * {
+    outline: none !important;
+}
+
+.infoTitle {
+    color: var(--text-muted);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 2px;
+    font-weight: 600;
+}
+
+.number {
+    color: var(--text);
+    font-size: 20px;
+    font-family: var(--font-family);
+    font-weight: 700;
+    text-align: center;
+}
+
+.periodBtns {
+    display: flex;
+    gap: 8px;
+}
+
+.pieGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 20px;
+    width: 100%;
+    margin-bottom: 24px;
+}
+
+.pieContent {
+    position: relative;
+    display: flex;
+    width: 250px;
+    height: 250px;
+    justify-content: center;
+    align-items: center;
+    margin: 20px auto;
+}
+
+.pieInfo {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 160px;
+    height: 160px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    border: 2px dashed var(--border);
+    box-sizing: border-box;
+    pointer-events: none;
+    background-color: rgba(255, 255, 255, 0.02);
+    text-align: center;
+    z-index: 1;
+}
+
+.navBtn {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+    border-radius: 50%;
+    transition: all var(--transition);
+    width: 36px;
+    height: 36px;
+}
+
+.navBtn:hover {
+    background-color: var(--bg-input);
+    transform: scale(1.1);
+}
