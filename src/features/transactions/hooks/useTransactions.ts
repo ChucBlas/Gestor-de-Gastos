@@ -2,12 +2,13 @@ import { useAppContext } from "../../../services/AppContext";
 import { transactionsService } from "../services/transactionsService";
 import type {
     CreateTransactionInput,
+    Transaction,
     UpdateTransactionInput,
 } from "../../../services/types";
+import { useEffect, useState } from "react";
 
 export function useTransactions() {
     const {
-        transactions,
         accounts,
         categories,
         refreshAll,
@@ -37,13 +38,33 @@ export function useTransactions() {
         await refreshAll();
     };
 
+    const [selectedAccountId, setSelectedAccountId] = useState<number | undefined>(undefined);
+    const [selectedCategoryId, setSelectedCategoryId] = useState<number | undefined>(undefined);
+
+    const [filteredTransactions, setFilteredTransactions] = useState<Transaction[]>([]);
+
+    useEffect (() => {
+        const fetchFilteredData = async () => {
+                const data = await transactionsService.getFromAccountAndCategory(
+                    selectedAccountId, 
+                    selectedCategoryId
+                );
+                setFilteredTransactions(data);
+        };
+        fetchFilteredData();
+    }, [selectedAccountId, selectedCategoryId]);
+
     return {
-        transactions,
+        transactions: filteredTransactions,
         accounts,
         categories,
-        loading,
+        loading: loading,
         create,
         update,
         remove,
+        selectedAccountId,
+        setSelectedAccountId,
+        selectedCategoryId,
+        setSelectedCategoryId,
     };
 }

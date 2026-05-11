@@ -8,6 +8,8 @@ import type {
 export const transactionsService = {
     getAll: (limit?: number) =>
         invoke<Transaction[]>("get_transactions", { limit }),
+    getFromAccountAndCategory: (account?: number, category?: number, limit?: number) =>
+        invoke<Transaction[]>("get_transactions_account_category", { account, category, limit }),
     getByPeriod: (dateFrom: string, dateTo: string) =>
         invoke<Transaction[]>("get_transactions_by_period", {
             dateFrom,

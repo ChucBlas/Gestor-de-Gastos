@@ -5,24 +5,26 @@ import styles from "../styles/TransactionsTable.module.css";
 
 interface TransactionsTableProps {
     transactions: Transaction[];
+    loading: boolean;
     onEdit: (tx: Transaction) => void;
     onDelete: (id: number) => void;
 }
 
 export function TransactionsTable({
     transactions,
+    loading,
     onEdit,
     onDelete,
 }: TransactionsTableProps) {
-    if (transactions.length === 0) {
+    if (transactions.length === 0 && loading) {
         return (
             <EmptyState
-                icon="💸"
-                message="No hay transacciones. ¡Registrá el primero!"
+            icon="💸"
+            message="No hay transacciones. ¡Registrá el primero!"
             />
         );
     }
-
+        
     const isMobile = window.innerWidth <= 768;
 
     return (

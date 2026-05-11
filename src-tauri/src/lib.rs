@@ -39,6 +39,7 @@ pub fn run() {
 
             // Transacciones
             get_transactions,
+            get_transactions_account_category,
             get_transactions_by_period,
             create_transaction,
             update_transaction,

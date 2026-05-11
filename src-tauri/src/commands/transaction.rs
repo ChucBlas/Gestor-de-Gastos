@@ -42,6 +42,21 @@ pub fn get_transactions(limit: Option<i64>) -> Result<Vec<Transaction>, String> 
 }
 
 #[command]
+pub fn get_transactions_account_category(account: Option<i32>, category: Option<i32>, limit: Option<i64>) -> Result<Vec<Transaction>, String> {
+    let db = get_db().lock().map_err(|e| e.to_string())?;
+    let lim = limit.unwrap_or(100);
+    let sql = format!("{} WHERE (?1 IS NULL OR account_id = ?1) AND (?2 IS NULL OR category_id = ?2)
+    ORDER BY t.date DESC, t.created_at DESC LIMIT ?3", TRANSACTION_SELECT);
+
+    let mut stmt = db.prepare(&sql).map_err(|e| e.to_string())?;
+    let txs = stmt.query_map(params![account, category, lim], row_to_transaction)
+        .map_err(|e| e.to_string())?
+        .collect::<Result<Vec<_>, _>>()
+        .map_err(|e| e.to_string())?;
+    Ok(txs)
+}
+
+#[command]
 pub fn get_transactions_by_period(
     date_from: String,
     date_to: String,
