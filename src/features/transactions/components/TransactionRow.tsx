@@ -45,7 +45,7 @@ export function TransactionRow({ tx, onEdit, onDelete }: TransactionRowProps) {
                         onClick={() =>
                             navigate(
                                 `/transactions/category/${tx.category_id}/${encodeURIComponent(tx.category_name!)}`,
-                                { state: { categoryName: tx.category_name, initialData: tx } } // <--- Pasamos el dato aquí
+                                { state: { categoryName: tx.category_name, initialData: tx } }
                             )
                         }
                     />

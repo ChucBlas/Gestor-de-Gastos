@@ -55,7 +55,7 @@ export function FinanceDonutChart(
                     </span>
                 </div>
             </div>
-            <div>{/*Aca van a ir los distintos textos*/}
+            <div>
                 {categories.map((cat) => 
                 <CategoryReport 
                     category={cat}

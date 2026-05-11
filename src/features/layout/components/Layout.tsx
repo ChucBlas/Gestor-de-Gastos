@@ -60,15 +60,6 @@ function LayoutInner() {
         setShowAddModal(true);
     }
 
-    {/*
-        useEffect(() => {
-            if (location.pathname !== '/') {
-                navigate('/', { replace: true });
-            }
-            //navigate('/');
-        }, []); // Se ejecuta solo una vez al arrancar la app
-        
-    */}
     return (
         <div className={styles.layout}>
             <header className={styles.header}>

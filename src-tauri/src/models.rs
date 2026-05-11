@@ -102,16 +102,12 @@ pub struct CategorySummary {
     pub total: f64,
 }
 
-// TODO: debería hacer YearData
-
 #[derive(Debug, Serialize, Deserialize)]
 pub struct MonthlyData {
     pub month: String, // "2025-03"
     pub income: f64,
     pub expense: f64,
 }
-
-// TODO: debería hacer WeekData
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct DashboardSummary {
