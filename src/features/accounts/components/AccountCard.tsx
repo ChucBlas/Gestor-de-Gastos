@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { formatARS } from "../../../services/types";
+import { extendFormatARS } from "../../../services/types";
 import type { Account } from "../../../services/types";
 import styles from "../styles/AccountCard.module.css";
 import { DeleteWindow } from "../../../components/ConfirmWindow/DeleteWindow";
@@ -16,7 +16,7 @@ export function AccountCard({ account, onEdit, onDelete }: AccountCardProps) {
     return (
         <div className={`card ${styles.card}`}>
             <span className={styles.name}>{account.name}</span>
-            <span className={styles.balance}>{formatARS(account.balance)}</span>
+            <span className={styles.balance}>{extendFormatARS(account.balance)}</span>
             <div className={styles.actions}>
                 <button
                     className="btn btn-edit btn-sm"

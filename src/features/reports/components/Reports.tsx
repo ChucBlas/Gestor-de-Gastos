@@ -1,7 +1,6 @@
 import { useReports, type Period } from "../hooks/useReports";
 import { formatARS } from "../../../services/types";
 import styles from "../styles/Reports.module.css";
-//import { BarChartReport } from "./BarChartReport";
 import { FinanceDonutChart } from "./PieChart";
 
 const PERIOD_LABELS: Record<Period, string> = {
@@ -67,11 +66,7 @@ export default function Reports() {
         balance,
         expenseCategories,
         incomeCategories,
-        //monthlyData,
-        //year,
     } = useReports();
-
-    //const isMobile = window.innerWidth <= 768;
 
     const handlePeriod = (p: String) => {
         const period = (p as Period) || "day";
@@ -204,9 +199,6 @@ export default function Reports() {
                     )}
                 </div>
             </div>
-            
-            {/* Aún no decido si incluirlo o no */}
-            {/*{!isMobile && BarChartReport(monthlyData, year)}*/}
         </>
     );
 }
