@@ -89,9 +89,10 @@ export default function Reports() {
         title: "Gastos por Categoría",
     };
 
-    const charts = (isBalanceNegative && isMobile)
-        ? [expenseChart, incomeChart]
-        : [incomeChart, expenseChart];
+    const charts =
+        isBalanceNegative && isMobile
+            ? [expenseChart, incomeChart]
+            : [incomeChart, expenseChart];
 
     return (
         <>
@@ -148,9 +149,7 @@ export default function Reports() {
                                 handlePeriod(period);
                             }}
                         >
-                            <div
-                                className="icon-arrow icon-left"
-                            />
+                            <div className="icon-arrow icon-left" />
                         </button>
                         <div>{printDate(period, cont)}</div>
                         <button
@@ -160,9 +159,7 @@ export default function Reports() {
                                 handlePeriod(period);
                             }}
                         >
-                            <div
-                                className="icon-arrow icon-right"
-                            />
+                            <div className="icon-arrow icon-right" />
                         </button>
                     </div>
                 </div>
@@ -204,11 +201,8 @@ export default function Reports() {
 
             <div className={styles.pieGrid}>
                 {charts.map((chart) => (
-                    <CardPieChart
-                        key={chart.title}
-                        {...chart}
-                    />
-                ))}  
+                    <CardPieChart key={chart.title} {...chart} />
+                ))}
             </div>
         </>
     );

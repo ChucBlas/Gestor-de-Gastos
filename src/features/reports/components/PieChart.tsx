@@ -4,11 +4,14 @@ import styles from "../styles/Reports.module.css";
 import { CategoryReport } from "./CategoryReport";
 
 interface FinanceDonutChart {
-    categories: CategorySummary[],
-    totalValue: number
+    categories: CategorySummary[];
+    totalValue: number;
 }
 
-export function FinanceDonutChart( { categories, totalValue}: FinanceDonutChart ) {
+export function FinanceDonutChart({
+    categories,
+    totalValue,
+}: FinanceDonutChart) {
     return (
         <div>
             <div className={styles.pieContent}>
@@ -51,12 +54,12 @@ export function FinanceDonutChart( { categories, totalValue}: FinanceDonutChart 
                 </div>
             </div>
             <div>
-                {categories.map((cat) => 
-                <CategoryReport 
-                    category={cat}
-                    percentOfTotal={cat.total/totalValue}
-                />
-                )}
+                {categories.map((cat) => (
+                    <CategoryReport
+                        category={cat}
+                        percentOfTotal={cat.total / totalValue}
+                    />
+                ))}
             </div>
         </div>
     );
