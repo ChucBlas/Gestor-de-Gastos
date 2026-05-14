@@ -1,8 +1,6 @@
 import { useReports, type Period } from "../hooks/useReports";
 import { formatARS } from "../../../services/types";
 import styles from "../styles/Reports.module.css";
-import { FinanceDonutChart } from "./PieChart";
-import { useState } from "react";
 import { CardPieChart } from "./CardPieChart";
 
 const PERIOD_LABELS: Record<Period, string> = {
