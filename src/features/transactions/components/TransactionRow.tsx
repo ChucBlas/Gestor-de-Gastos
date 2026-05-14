@@ -17,7 +17,7 @@ export function TransactionRow({ tx, onEdit, onDelete }: TransactionRowProps) {
     const [showConfirm, setShowConfirm] = useState(false);
     const [showInfo, setShowInfo] = useState(false);
 
-    const isMobile = window.innerWidth <= 768;
+    const isMobile = window.innerWidth <= 700;
 
     const handleClickRow = () => {
         setShowInfo(true);

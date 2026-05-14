@@ -23,7 +23,7 @@ export default function Categories() {
     const expenses = firstSinCategoria(categories, "expense");
     const incomes = firstSinCategoria(categories, "income");
 
-    const isMobile = window.innerWidth <= 768;
+    const isMobile = window.innerWidth <= 700;
 
     return (
         <>
