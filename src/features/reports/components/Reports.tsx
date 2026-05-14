@@ -2,6 +2,8 @@ import { useReports, type Period } from "../hooks/useReports";
 import { formatARS } from "../../../services/types";
 import styles from "../styles/Reports.module.css";
 import { FinanceDonutChart } from "./PieChart";
+import { useState } from "react";
+import { CardPieChart } from "./CardPieChart";
 
 const PERIOD_LABELS: Record<Period, string> = {
     day: "Día",
@@ -73,6 +75,25 @@ export default function Reports() {
         setMultiplier(cont);
         setPeriod(period);
     };
+
+    const isBalanceNegative = balance.net < 0;
+    const isMobile = window.innerWidth <= 700;
+
+    const incomeChart = {
+        balance: balance.total_income,
+        categories: incomeCategories,
+        title: "Ingresos por Categoría",
+    };
+
+    const expenseChart = {
+        balance: balance.total_expense,
+        categories: expenseCategories,
+        title: "Gastos por Categoría",
+    };
+
+    const charts = (isBalanceNegative && isMobile)
+        ? [expenseChart, incomeChart]
+        : [incomeChart, expenseChart];
 
     return (
         <>
@@ -184,20 +205,12 @@ export default function Reports() {
             </div>
 
             <div className={styles.pieGrid}>
-                <div>
-                    {FinanceDonutChart(
-                        expenseCategories,
-                        balance.total_expense,
-                        "Gastos por Categoría",
-                    )}
-                </div>
-                <div>
-                    {FinanceDonutChart(
-                        incomeCategories,
-                        balance.total_income,
-                        "Ingresos por Categoría",
-                    )}
-                </div>
+                {charts.map((chart) => (
+                    <CardPieChart
+                        key={chart.title}
+                        {...chart}
+                    />
+                ))}  
             </div>
         </>
     );

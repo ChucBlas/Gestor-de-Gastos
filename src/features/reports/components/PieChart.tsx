@@ -3,19 +3,14 @@ import { CategorySummary, formatARS } from "../../../services/types";
 import styles from "../styles/Reports.module.css";
 import { CategoryReport } from "./CategoryReport";
 
-/**
- * Donut chart with a centered text label showing the total value.
- * @param categories - Data for the chart slices
- * @param totalValue - Numeric value to display in the center
- */
-export function FinanceDonutChart(
+interface FinanceDonutChart {
     categories: CategorySummary[],
-    totalValue: number,
-    title: string,
-) {
+    totalValue: number
+}
+
+export function FinanceDonutChart( { categories, totalValue}: FinanceDonutChart ) {
     return (
-        <div className="card">
-            <div className="card-title">{title}</div>
+        <div>
             <div className={styles.pieContent}>
                 <PieChart
                     style={{
