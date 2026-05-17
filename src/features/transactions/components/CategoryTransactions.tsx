@@ -35,8 +35,8 @@ export default function CategoryTransactions() {
         <>
             <div className={styles.summary}>
                 <span className={styles.summaryLabel}>
-                    <strong>{transactions.length}</strong> transacción
-                    {transactions.length !== 1 ? "s" : ""} en&nbsp;
+                    <strong>{transactions.length}</strong> transacci
+                    {transactions.length !== 1 ? "ones" : "ón"} en&nbsp;
                     <strong>{categoryName}</strong>
                 </span>
                 <span
@@ -57,6 +57,7 @@ export default function CategoryTransactions() {
                 ) : (
                     <TransactionsTable
                         transactions={transactions}
+                        loading={loading}
                         onEdit={openEdit}
                         onDelete={remove}
                     />
