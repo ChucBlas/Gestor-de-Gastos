@@ -1,7 +1,8 @@
-use rusqlite::params;
-use tauri::command;
+use crate::commands::transaction::update_transactions_category;
 use crate::db::get_db;
 use crate::models::{Category, CreateCategory, UpdateCategory};
+use rusqlite::params;
+use tauri::command;
 
 #[command]
 pub fn get_categories() -> Result<Vec<Category>, String> {
@@ -61,15 +62,22 @@ pub fn delete_category(id: i64) -> Result<(), String> {
     let db = get_db().lock().map_err(|e| e.to_string())?;
 
     // Previene borrar "Sin categoría"
-    let name: String = db.query_row(
-        "SELECT name FROM categories WHERE id = ?1",
-        params![id],
-        |r| r.get(0),
-    ).map_err(|e| e.to_string())?;
+    let (name, category_type): (String, String) = db
+        .query_row(
+            "SELECT name, category_type FROM categories WHERE id = ?1",
+            params![id],
+            |r| Ok((r.get(0)?, r.get(1)?)),
+        )
+        .map_err(|e| e.to_string())?;
 
     if name == "Sin categoría" {
         return Err("No se puede eliminar la categoría predeterminada".to_string());
     }
+
+    let sin_categoria_category =
+        get_category_by_name_and_type(&db, "Sin categoría", &category_type)?;
+
+    update_transactions_category(&db, id, sin_categoria_category.id)?;
 
     db.execute("DELETE FROM categories WHERE id = ?1", params![id])
         .map_err(|e| e.to_string())?;
@@ -80,6 +88,27 @@ fn get_category_by_id(db: &rusqlite::Connection, id: i64) -> Result<Category, St
     db.query_row(
         "SELECT id, name, category_type, icon, color FROM categories WHERE id = ?1",
         params![id],
+        |row| {
+            Ok(Category {
+                id: row.get(0)?,
+                name: row.get(1)?,
+                category_type: row.get(2)?,
+                icon: row.get(3)?,
+                color: row.get(4)?,
+            })
+        },
+    )
+    .map_err(|e| e.to_string())
+}
+
+fn get_category_by_name_and_type(
+    db: &rusqlite::Connection,
+    name: &str,
+    category_type: &str,
+) -> Result<Category, String> {
+    db.query_row(
+        "SELECT id, name, category_type, icon, color FROM categories WHERE name = ?1 AND category_type = ?2",
+        params![name, category_type],
         |row| {
             Ok(Category {
                 id: row.get(0)?,

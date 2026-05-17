@@ -1,7 +1,10 @@
+use crate::{
+    db::get_db,
+    models::{CreateTransaction, Transaction, UpdateTransaction},
+};
+use chrono::Utc;
 use rusqlite::params;
 use tauri::command;
-use crate::{db::get_db, models::{CreateTransaction, Transaction, UpdateTransaction}};
-use chrono::Utc;
 
 fn row_to_transaction(row: &rusqlite::Row) -> rusqlite::Result<Transaction> {
     Ok(Transaction {
@@ -30,7 +33,10 @@ const TRANSACTION_SELECT: &str = "
 pub fn get_transactions(limit: Option<i64>) -> Result<Vec<Transaction>, String> {
     let db = get_db().lock().map_err(|e| e.to_string())?;
     let lim = limit.unwrap_or(100);
-    let sql = format!("{} ORDER BY t.date DESC, t.created_at DESC LIMIT ?1", TRANSACTION_SELECT);
+    let sql = format!(
+        "{} ORDER BY t.date DESC, t.created_at DESC LIMIT ?1",
+        TRANSACTION_SELECT
+    );
 
     let mut stmt = db.prepare(&sql).map_err(|e| e.to_string())?;
     let txs = stmt
@@ -42,14 +48,22 @@ pub fn get_transactions(limit: Option<i64>) -> Result<Vec<Transaction>, String> 
 }
 
 #[command]
-pub fn get_transactions_account_category(account: Option<i32>, category: Option<i32>, limit: Option<i64>) -> Result<Vec<Transaction>, String> {
+pub fn get_transactions_account_category(
+    account: Option<i32>,
+    category: Option<i32>,
+    limit: Option<i64>,
+) -> Result<Vec<Transaction>, String> {
     let db = get_db().lock().map_err(|e| e.to_string())?;
     let lim = limit.unwrap_or(100);
-    let sql = format!("{} WHERE (?1 IS NULL OR account_id = ?1) AND (?2 IS NULL OR category_id = ?2)
-    ORDER BY t.date DESC, t.created_at DESC LIMIT ?3", TRANSACTION_SELECT);
+    let sql = format!(
+        "{} WHERE (?1 IS NULL OR account_id = ?1) AND (?2 IS NULL OR category_id = ?2)
+    ORDER BY t.date DESC, t.created_at DESC LIMIT ?3",
+        TRANSACTION_SELECT
+    );
 
     let mut stmt = db.prepare(&sql).map_err(|e| e.to_string())?;
-    let txs = stmt.query_map(params![account, category, lim], row_to_transaction)
+    let txs = stmt
+        .query_map(params![account, category, lim], row_to_transaction)
         .map_err(|e| e.to_string())?
         .collect::<Result<Vec<_>, _>>()
         .map_err(|e| e.to_string())?;
@@ -180,5 +194,18 @@ pub fn delete_transaction(id: i64) -> Result<(), String> {
 
     db.execute("DELETE FROM transactions WHERE id = ?1", params![id])
         .map_err(|e| e.to_string())?;
+    Ok(())
+}
+
+pub fn update_transactions_category(
+    db: &rusqlite::Connection,
+    old_category_id: i64,
+    new_category_id: i64,
+) -> Result<(), String> {
+    db.execute(
+        "UPDATE transactions SET category_id = ?1 WHERE category_id = ?2",
+        params![new_category_id, old_category_id],
+    )
+    .map_err(|e| e.to_string())?;
     Ok(())
 }
