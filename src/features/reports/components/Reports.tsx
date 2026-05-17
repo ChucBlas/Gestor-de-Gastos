@@ -1,5 +1,5 @@
 import { useReports, type Period } from "../hooks/useReports";
-import { formatARS } from "../../../services/types";
+import { extendFormatARS } from "../../../services/types";
 import styles from "../styles/Reports.module.css";
 import { CardPieChart } from "./CardPieChart";
 
@@ -195,7 +195,7 @@ export default function Reports() {
                 <span
                     className={`stat-value ${balance.net >= 0 ? "income" : "expense"}`}
                 >
-                    {formatARS(balance.net)}
+                    {extendFormatARS(balance.net)}
                 </span>
             </div>
 

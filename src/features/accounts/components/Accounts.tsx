@@ -2,7 +2,7 @@ import { useAccounts } from "../hooks/useAccounts";
 import { AccountCard } from "./AccountCard";
 import { AccountModal } from "./AccountModal";
 import { EmptyState } from "../../../components/EmptyState/EmptyState";
-import { formatARS } from "../../../services/types";
+import { extendFormatARS } from "../../../services/types";
 import styles from "../styles/Accounts.module.css";
 
 export default function Accounts() {
@@ -57,7 +57,7 @@ export default function Accounts() {
                         <span
                             className={`${styles.totalBalance} ${totalBalance >= 0 ? styles.positive : styles.negative}`}
                         >
-                            {formatARS(totalBalance)}
+                            {extendFormatARS(totalBalance)}
                         </span>
                     </div>
                 </>
