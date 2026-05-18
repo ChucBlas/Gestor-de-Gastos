@@ -171,7 +171,9 @@ export function TransactionModal({
                         <CalculatorPopover
                             initialNumber={form.amount}
                             onClose={() => setShowCalc(false)}
-                            onConfirm={(val) => field("amount", val)}
+                            onConfirm={(val) => {field("amount", val);
+                                setBalanceStr(val.toString());
+                            }}
                         />
                     )}
                 </div>
