@@ -17,8 +17,8 @@ export function CalculatorPopover({
     const [display, setDisplay] = useState(
         initialNumber ? String(initialNumber) : "0",
     );
-    const [prev, setPrev] = useState<number | null>(null);
-    const [op, setOp] = useState<Op>(null);
+
+    const [tokens, setTokens] = useState<(number | string)[]>([]);
     const [waitingOperand, setWaitingOperand] = useState(false);
 
     const inputDigit = useCallback(
@@ -44,43 +44,63 @@ export function CalculatorPopover({
         if (!display.includes(".")) setDisplay((d) => d + ".");
     }, [waitingOperand, display]);
 
-    const handleOp = useCallback(
+    const handleOperator = useCallback(
         (nextOp: Op) => {
-            const cur = parseFloat(display);
-            if (prev !== null && op && !waitingOperand) {
-                const result = compute(prev, cur, op);
-                setDisplay(String(round2(result)));
-                setPrev(round2(result));
-            } else {
-                setPrev(cur);
+            const currentValue = parseFloat(display);
+
+            // Reemplazamos un operador si antes habíamos tocado otro
+            if (waitingOperand && tokens.length > 0) {
+                setTokens((prev) => {
+                    const newTokens = [...prev];
+                    newTokens[newTokens.length - 1] = nextOp!;
+                    return newTokens;
+                });
+                return;
             }
-            setOp(nextOp);
+
+            const newTokens = [...tokens, currentValue, nextOp!];
+            setTokens(newTokens);
+
+            const runningResult = evaluateTokens(newTokens.slice(0, -1));
+            setDisplay(String(round2(runningResult)));
+
             setWaitingOperand(true);
         },
-        [display, prev, op, waitingOperand],
+        [display, tokens, waitingOperand],
     );
 
     const handleEquals = useCallback(() => {
-        if (prev === null || !op) return;
-        const cur = parseFloat(display);
-        const result = round2(compute(prev, cur, op));
+        if (tokens.length === 0) return;
+
+        let finalTokens = [...tokens];
+
+        if (waitingOperand) {
+            finalTokens = finalTokens.slice(0, -1);
+        } else {
+            finalTokens.push(parseFloat(display));
+        }
+
+        const result = round2(evaluateTokens(finalTokens));
         setDisplay(String(result));
-        setPrev(null);
-        setOp(null);
+        setTokens([]);
         setWaitingOperand(true);
-    }, [display, prev, op]);
+    }, [display, tokens, waitingOperand]);
 
     const handlePercent = useCallback(() => {
         const cur = parseFloat(display);
-        const result = round2(prev !== null ? (prev * cur) / 100 : cur / 100);
-        setDisplay(String(result));
+        if (tokens.length > 0) {
+            const base = evaluateTokens(tokens.slice(0, -1));
+            const result = round2((base * cur) / 100);
+            setDisplay(String(result));
+        } else {
+            setDisplay(String(round2(cur / 100)));
+        }
         setWaitingOperand(true);
-    }, [display, prev]);
+    }, [display, tokens]);
 
     const handleClear = useCallback(() => {
         setDisplay("0");
-        setPrev(null);
-        setOp(null);
+        setTokens([]);
         setWaitingOperand(false);
     }, []);
 
@@ -88,7 +108,7 @@ export function CalculatorPopover({
         setDisplay((d) => (d.length > 1 ? d.slice(0, -1) : "0"));
     }, []);
 
-    const expression = prev !== null && op ? `${round2(prev)} ${op}` : "";
+    const expression = tokens.join(" ");
 
     const BUTTONS = [
         ["C", "⌫", "%", "÷"],
@@ -120,13 +140,16 @@ export function CalculatorPopover({
             case "-":
             case "×":
             case "÷":
-                handleOp(label as Op);
+                handleOperator(label as Op);
                 break;
             case "=":
                 handleEquals();
                 break;
         }
     };
+
+    const activeOp =
+        tokens.length > 0 && waitingOperand ? tokens[tokens.length - 1] : null;
 
     return (
         <div className={styles.popover} role="dialog" aria-label="Calculadora">
@@ -142,7 +165,7 @@ export function CalculatorPopover({
                         const isEquals = label === "=";
                         const isWide = label === "0";
                         const isClear = label === "C";
-                        const isActive = op === label;
+                        const isActive = activeOp === label;
                         return (
                             <button
                                 key={`${ri}-${label}`}
@@ -181,20 +204,34 @@ export function CalculatorPopover({
     );
 }
 
-// ── helpers ─────────────────────────────────────────────────
-function compute(a: number, b: number, op: Op): number {
-    switch (op) {
-        case "+":
-            return a + b;
-        case "-":
-            return a - b;
-        case "×":
-            return a * b;
-        case "÷":
-            return b !== 0 ? a / b : 0;
-        default:
-            return b;
+function evaluateTokens(tokens: (number | string)[]): number {
+    if (tokens.length === 0) return 0;
+
+    const tempTokens = [...tokens];
+
+    // 1ra Pasada: Resolver Multiplicaciones y Divisiones primero
+    for (let i = 0; i < tempTokens.length; i++) {
+        const token = tempTokens[i];
+        if (token === "×" || token === "÷") {
+            const a = tempTokens[i - 1] as number;
+            const b = tempTokens[i + 1] as number;
+            const result = token === "×" ? a * b : b !== 0 ? a / b : 0;
+
+            tempTokens.splice(i - 1, 3, result);
+            i -= 2;
+        }
     }
+
+    // 2da Pasada: Resolver Sumas y Restas
+    let result = tempTokens[0] as number;
+    for (let i = 1; i < tempTokens.length; i += 2) {
+        const op = tempTokens[i];
+        const next = tempTokens[i + 1] as number;
+        if (op === "+") result += next;
+        if (op === "-") result -= next;
+    }
+
+    return result;
 }
 
 function round2(v: number): number {
