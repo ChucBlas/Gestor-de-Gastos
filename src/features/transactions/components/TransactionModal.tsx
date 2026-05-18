@@ -45,6 +45,11 @@ export function TransactionModal({
         editing ? String(editing.amount) : "",
     );
 
+    const [errorImport, setErrorImport] = useState<(boolean)>(false);
+    const [errorDate, setErrorDate] = useState<(boolean)>(false);
+
+    const existingErrors = errorImport || errorDate;
+
     const [form, setForm] = useState<FormState>({
         amount: 0,
         transaction_type: initialType,
@@ -101,20 +106,43 @@ export function TransactionModal({
 
     const handleSave = () => {
         const parsedBalance = parseFloat(balanceStr) || 0;
-        field("amount", parsedBalance);
-        if (isEdit && editing && onUpdate) {
-            onUpdate(editing.id, form);
-        } else if (onSubmit) {
-            onSubmit(form);
+        if (!existingErrors) {
+            field("amount", parsedBalance);
+            if (isEdit && editing && onUpdate) {
+                onUpdate(editing.id, form);
+            } else if (onSubmit) {
+                onSubmit(form);
+            }
         }
     };
+
+    const handleDate = (date: string) => {
+        field("date", date);
+        const hoy = new Date();
+        hoy.setHours(0, 0, 0, 0);
+        const fechaIngresada = parseDate(date);
+        if (hoy < fechaIngresada) {
+            setErrorDate(true);
+        } else {
+            setErrorDate(false);
+        }
+    }
+
+    const handleImport = (value: string) => {
+        setBalanceStr(value);
+        if ((parseFloat(value) || 0) <= 0) {
+            setErrorImport(true);
+        } else {
+            setErrorImport(false);
+        }
+    }
 
     const footer = (
         <>
             <button className="btn btn-ghost" onClick={onClose}>
                 Cancelar
             </button>
-            <button className="btn btn-primary" onClick={handleSave}>
+            <button className="btn btn-primary" style={{background: (!existingErrors) ? "" : "#132a20"}} onClick={handleSave}>
                 {isEdit ? "Guardar cambios" : "Guardar"}
             </button>
         </>
@@ -142,7 +170,12 @@ export function TransactionModal({
             </div>
 
             <div className="form-group">
-                <label className="form-label">Importe (ARS)</label>
+                <div style={{display: "flex", gap: "10px"}}>
+                    <label className="form-label">Importe (ARS)</label>
+                    {errorImport && (
+                                <p className="alert">Importe inválido!</p>
+                            )}
+                </div>
                 <div
                     style={{
                         position: "relative",
@@ -156,7 +189,7 @@ export function TransactionModal({
                         min="0"
                         placeholder="0"
                         value={balanceStr}
-                        onChange={(e) => setBalanceStr(e.target.value)}
+                        onChange={(e) => handleImport(e.target.value)}
                     />
                     <button
                         type="button"
@@ -171,9 +204,7 @@ export function TransactionModal({
                         <CalculatorPopover
                             initialNumber={form.amount}
                             onClose={() => setShowCalc(false)}
-                            onConfirm={(val) => {field("amount", val);
-                                setBalanceStr(val.toString());
-                            }}
+                            onConfirm={(val) => {handleImport(String(val))}}
                         />
                     )}
                 </div>
@@ -197,12 +228,17 @@ export function TransactionModal({
                     </select>
                 </div>
                 <div className="form-group">
-                    <label className="form-label">Fecha</label>
+                    <div style={{display: "flex", gap: "10px"}}>
+                        <label className="form-label">Fecha</label>
+                        {errorDate && (
+                            <p className="alert">Fecha inválida!</p>
+                        )}
+                    </div>
                     <input
                         className="form-input"
                         type="date"
                         value={form.date}
-                        onChange={(e) => field("date", e.target.value)}
+                        onChange={(e) => handleDate(e.target.value)}
                     />
                 </div>
             </div>
@@ -244,4 +280,9 @@ export function TransactionModal({
             </div>
         </Modal>
     );
+}
+
+function parseDate(date: String): Date {
+    const parts = date.split("-").map(e => parseInt(e))
+    return new Date(parts[0], parts[1] - 1, parts[2])
 }

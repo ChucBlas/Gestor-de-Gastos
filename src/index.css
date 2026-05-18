@@ -283,6 +283,14 @@ a {
     margin: 0;
 }
 
+.alert {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--expense);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+
 /* Table */
 .table-wrap {
     overflow-x: auto;
