@@ -105,9 +105,7 @@ export function TransactionModal({
     const descLen = form.description.length;
 
     const handleSave = () => {
-        const parsedBalance = parseFloat(balanceStr) || 0;
         if (!existingErrors) {
-            field("amount", parsedBalance);
             if (isEdit && editing && onUpdate) {
                 onUpdate(editing.id, form);
             } else if (onSubmit) {
@@ -117,7 +115,6 @@ export function TransactionModal({
     };
 
     const handleDate = (date: string) => {
-        field("date", date);
         const hoy = new Date();
         hoy.setHours(0, 0, 0, 0);
         const fechaIngresada = parseDate(date);
@@ -126,15 +123,18 @@ export function TransactionModal({
         } else {
             setErrorDate(false);
         }
+        field("date", date);
     }
 
     const handleImport = (value: string) => {
         setBalanceStr(value);
-        if ((parseFloat(value) || 0) <= 0) {
+        const balance = parseFloat(value) || 0;
+        if ((balance) <= 0) {
             setErrorImport(true);
         } else {
             setErrorImport(false);
         }
+        field("amount", balance);
     }
 
     const footer = (
