@@ -16,7 +16,10 @@ export function TransactionsTable({
     onEdit,
     onDelete,
 }: TransactionsTableProps) {
-    if (transactions.length === 0 && loading) {
+
+    if (loading) return <EmptyState icon="⏳" message="Cargando..." />;
+
+    if (transactions.length === 0) {
         return (
             <EmptyState
             icon="💸"

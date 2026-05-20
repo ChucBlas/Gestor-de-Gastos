@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useTransactions } from "../hooks/useTransactions";
 import { TransactionsTable } from "./TransactionsTable";
 import { TransactionModal } from "./TransactionModal";
-import { EmptyState } from "../../../components/EmptyState/EmptyState";
 import type { Transaction } from "../../../services/types";
 
 export default function Transactions() {
@@ -27,11 +26,9 @@ export default function Transactions() {
         setShowModal(true);
     };
 
-    if (loading) return <EmptyState icon="⏳" message="Cargando..." />;
-
     return (
         <>
-            <div>
+            <div style={{ display: "flex", justifyContent: "space-between"}}>
                 <div style={{margin: "12px"}}>
                     <select
                         className="form-select account-select"
