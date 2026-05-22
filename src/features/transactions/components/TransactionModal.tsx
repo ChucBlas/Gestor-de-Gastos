@@ -45,6 +45,10 @@ export function TransactionModal({
         editing ? String(editing.amount) : "",
     );
 
+    const accountDefaultId = localStorage.getItem("accountDefaultId");
+    const ordenedAccounts = ordAccounts(accounts, accountDefaultId);
+    console.log("Ordeñando cuentas, defaultId:", accountDefaultId, "Cuentas ordenadas:", ordenedAccounts);
+
     const [errorImport, setErrorImport] = useState<(boolean)>(false);
     const [errorDate, setErrorDate] = useState<(boolean)>(false);
 
@@ -55,7 +59,7 @@ export function TransactionModal({
         transaction_type: initialType,
         description: "",
         date: new Date().toISOString().slice(0, 10),
-        account_id: accounts[0]?.id ?? 0,
+        account_id: ordenedAccounts[0]?.id ?? 0,
         category_id: categories[0]?.id ?? 0,
     });
 
@@ -81,7 +85,7 @@ export function TransactionModal({
                 transaction_type: initialType,
                 description: "",
                 date: new Date().toISOString().slice(0, 10),
-                account_id: accounts[0]?.id ?? 0,
+                account_id: ordenedAccounts[0]?.id ?? 0,
                 category_id: defCategory,
             });
         }
@@ -285,4 +289,19 @@ export function TransactionModal({
 function parseDate(date: String): Date {
     const parts = date.split("-").map(e => parseInt(e))
     return new Date(parts[0], parts[1] - 1, parts[2])
+}
+
+function ordAccounts(accounts: Account[], defaultId: string | null): Account[] {
+    if (defaultId === null) {
+        return accounts;
+    }
+
+    const accountSelected = accounts.find(a => a.id === parseInt(defaultId));
+    if (!accountSelected) {
+        return accounts;
+    } 
+    const accountsWODefId = accounts.filter(a => a.id !== parseInt(defaultId));
+
+    accountsWODefId.unshift(accountSelected)
+    return accountsWODefId;
 }

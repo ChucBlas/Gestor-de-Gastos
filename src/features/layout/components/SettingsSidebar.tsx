@@ -11,7 +11,13 @@ interface SettingsSidebarProps {
 
 export function SettingsSidebar({ onClose }: SettingsSidebarProps) {
     const { dark, toggleDark } = useDarkMode();
-    const { cents, toggleCents } = useAppContext();
+    const {
+        cents,
+        accounts,
+        accountDefaultId,
+        setAccountDefaultIdWrapper,
+        toggleCents,
+    } = useAppContext();
     const { handleSubmit } = usePrincipal();
 
     return (
@@ -64,7 +70,7 @@ export function SettingsSidebar({ onClose }: SettingsSidebarProps) {
                         </div>
                         <SelectButton
                             onFileSelect={(path) => {
-                                handleSubmit(path, "expense"); 
+                                handleSubmit(path, "expense");
                             }}
                         />
                     </div>
@@ -79,11 +85,31 @@ export function SettingsSidebar({ onClose }: SettingsSidebarProps) {
                         </div>
                         <SelectButton
                             onFileSelect={(path) => {
-                                handleSubmit(path, "income"); 
+                                handleSubmit(path, "income");
                             }}
                         />
                     </div>
                     {/* TODO: Implementar botón + la lógica para exportar los datos */}
+                    <div style={{ margin: "12px" }}>
+                        <select
+                            className="form-select account-select"
+                            value={accountDefaultId ?? "all"}
+                            onChange={(e) =>
+                                setAccountDefaultIdWrapper(
+                                    e.target.value === "all"
+                                        ? null
+                                        : parseInt(e.target.value),
+                                )
+                            }
+                        >
+                            <option value="all">Orden alfabético</option>
+                            {accounts.map((a) => (
+                                <option key={a.id} value={a.id}>
+                                    {a.name}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
                 </div>
             </div>
         </div>

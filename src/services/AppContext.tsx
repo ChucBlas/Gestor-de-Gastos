@@ -28,6 +28,9 @@ export interface AppContextValue {
     cents: boolean;
     toggleCents: (val: boolean) => void;
 
+    accountDefaultId: number | null;
+    setAccountDefaultIdWrapper: (id: number | null) => void;
+
     refreshAll: () => Promise<void>;
 }
 
@@ -53,6 +56,22 @@ export function AppProvider({ children }: { children: ReactNode }) {
         const val = localStorage.getItem("viewCents");
         return val === null ? true : val === "true";
     });
+
+    const [accountDefaultId, setAccountDefaultId] = useState<number | null>(
+        () => {
+            const value = localStorage.getItem("accountDefaultId");
+            return value ? parseInt(value) : null;
+        },
+    );
+
+    const setAccountDefaultIdWrapper = useCallback((id: number | null) => {
+        setAccountDefaultId(id);
+        if (id === null) {
+            localStorage.setItem("accountDefaultId", "all");
+        } else {
+            localStorage.setItem("accountDefaultId", id.toString());
+        }
+    }, []);
 
     const toggleCents = useCallback((val: boolean) => {
         setCentsState(val);
@@ -109,6 +128,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
                 transactions,
                 bootstrapping,
                 cents,
+                accountDefaultId,
+                setAccountDefaultIdWrapper,
                 toggleCents,
                 refreshAccounts,
                 refreshCategories,
