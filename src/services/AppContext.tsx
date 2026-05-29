@@ -87,7 +87,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
     }, []);
 
     const refreshDashboard = useCallback(async () => {
-        setDashboardData(await dashboardService.getSummary());
+        setDashboardData(await dashboardService.getSummary(undefined));
     }, []);
 
     const refreshTransactions = useCallback(async () => {
@@ -108,7 +108,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
         Promise.all([
             accountsService.getAll(),
             categoriesService.getAll(),
-            dashboardService.getSummary(),
+            dashboardService.getSummary(undefined),
             transactionsService.getAll(200),
         ]).then(([accs, cats, dash, movs]) => {
             setAccounts(accs);
@@ -118,6 +118,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
             setBootstrapping(false);
         });
     }, []);
+    console.log("AppContext dashboardData:", dashboardData);
 
     return (
         <AppContext.Provider

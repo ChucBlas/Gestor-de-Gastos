@@ -9,8 +9,8 @@ interface BalanceCardProps {
     label: string;
     monthName: string;
     accounts: Account[];
-    selectedAccountId: number | "all";
-    onAccountChange: (id: number | "all") => void;
+    selectedAccountId: number | undefined;
+    onAccountChange: (id: number | undefined) => void;
 }
 
 export function BalanceCard({
@@ -32,7 +32,7 @@ export function BalanceCard({
                     onChange={(e) =>
                         onAccountChange(
                             e.target.value === "all"
-                                ? "all"
+                                ? undefined
                                 : parseInt(e.target.value),
                         )
                     }
@@ -46,7 +46,9 @@ export function BalanceCard({
                 </select>
             </div>
             <div className={styles.balanceLabel}>Balance · {label}</div>
-            <div className={styles.balanceAmount}>{extendFormatARS(balance)}</div>
+            <div className={styles.balanceAmount}>
+                {extendFormatARS(balance)}
+            </div>
             <div className={styles.balanceSubtitle}>{monthName}</div>
             <div className={styles.row}>
                 <div className={styles.mini}>

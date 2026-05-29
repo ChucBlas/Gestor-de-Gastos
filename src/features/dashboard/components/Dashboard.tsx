@@ -24,43 +24,17 @@ export default function Dashboard() {
     });
     const monthNameCap = monthName.charAt(0).toUpperCase() + monthName.slice(1);
 
-    const filteredTx: Transaction[] =
-        selectedAccountId === "all"
-            ? data.recent_transactions
-            : data.recent_transactions.filter(
-                  (tx) => tx.account_id === selectedAccountId,
-              );
-
-    let displayBalance: number;
-    let displayIncome: number;
-    let displayExpense: number;
-
-    if (selectedAccountId === "all") {
-        displayBalance = data.total_balance;
-        displayIncome = data.month_income;
-        displayExpense = data.month_expense;
-    } else {
-        const acc = accounts.find((a) => a.id === selectedAccountId);
-        displayBalance = acc?.balance ?? 0;
-        displayIncome = filteredTx
-            .filter((t) => t.transaction_type === "income")
-            .reduce((s, t) => s + t.amount, 0);
-        displayExpense = filteredTx
-            .filter((t) => t.transaction_type === "expense")
-            .reduce((s, t) => s + t.amount, 0);
-    }
-
     const selectedLabel =
-        selectedAccountId === "all"
+        selectedAccountId === undefined
             ? "Todas las cuentas"
             : (accounts.find((a) => a.id === selectedAccountId)?.name ?? "");
 
     return (
         <>
             <BalanceCard
-                balance={displayBalance}
-                income={displayIncome}
-                expense={displayExpense}
+                balance={data.total_balance}
+                income={data.month_income}
+                expense={data.month_expense}
                 label={selectedLabel}
                 monthName={monthNameCap}
                 accounts={accounts}
@@ -68,7 +42,7 @@ export default function Dashboard() {
                 onAccountChange={setSelectedAccountId}
             />
             <RecentTransactions
-                transactions={filteredTx}
+                transactions={data.recent_transactions}
                 categories={categories}
             />
         </>

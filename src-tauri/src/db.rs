@@ -1,5 +1,5 @@
-use rusqlite::{Connection, Result, params};
 use once_cell::sync::OnceCell;
+use rusqlite::{params, Connection, Result};
 use std::sync::Mutex;
 
 static DB: OnceCell<Mutex<Connection>> = OnceCell::new();
@@ -53,28 +53,27 @@ pub fn init_db(db_path: &str) -> Result<()> {
 }
 
 fn seed_default_categories(conn: &Connection) -> Result<()> {
-    let count: i64 = conn
-        .query_row("SELECT COUNT(*) FROM categories", [], |r| r.get(0))?;
+    let count: i64 = conn.query_row("SELECT COUNT(*) FROM categories", [], |r| r.get(0))?;
 
     if count > 0 {
         return Ok(());
     }
 
     let defaults = vec![
-        ("Sin categoría",  "income",  "",   "#888"),
-        ("Sin categoría",  "expense",  "",  "#888"),
-        ("Salario",        "income",  "💼", "#4CAF50"),
-        ("Freelance",      "income",  "💻", "#8BC34A"),
-        ("Inversiones",    "income",  "📈", "#00BCD4"),
-        ("Otros ingresos", "income",  "➕", "#009688"),
-        ("Alimentación",   "expense", "🍔", "#F44336"),
-        ("Transporte",     "expense", "🚌", "#FF5722"),
-        ("Salud",          "expense", "❤️", "#E91E63"),
-        ("Educación",      "expense", "📚", "#9C27B0"),
-        ("Entretenimiento","expense", "🎬", "#3F51B5"),
-        ("Servicios",      "expense", "💡", "#2196F3"),
-        ("Ropa",           "expense", "👗", "#00BCD4"),
-        ("Otros gastos",   "expense", "📦", "#065177ff"),
+        ("Sin categoría", "income", "", "#888"),
+        ("Sin categoría", "expense", "", "#888"),
+        ("Salario", "income", "💼", "#4CAF50"),
+        ("Freelance", "income", "💻", "#8BC34A"),
+        ("Inversiones", "income", "📈", "#00BCD4"),
+        ("Otros ingresos", "income", "➕", "#009688"),
+        ("Alimentación", "expense", "🍔", "#F44336"),
+        ("Transporte", "expense", "🚌", "#FF5722"),
+        ("Salud", "expense", "❤️", "#E91E63"),
+        ("Educación", "expense", "📚", "#9C27B0"),
+        ("Entretenimiento", "expense", "🎬", "#3F51B5"),
+        ("Servicios", "expense", "💡", "#2196F3"),
+        ("Ropa", "expense", "👗", "#00BCD4"),
+        ("Otros gastos", "expense", "📦", "#065177ff"),
     ];
 
     for (name, cat_type, icon, color) in defaults {
