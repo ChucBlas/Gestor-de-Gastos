@@ -2,7 +2,6 @@ import { useDashboard } from "../hooks/useDashboard";
 import { BalanceCard } from "./BalanceCard";
 import { RecentTransactions } from "./RecentTransactions";
 import { EmptyState } from "../../../components/EmptyState/EmptyState";
-import type { Transaction } from "../../../services/types";
 
 export default function Dashboard() {
     const {
