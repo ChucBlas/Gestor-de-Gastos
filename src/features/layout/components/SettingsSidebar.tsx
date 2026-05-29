@@ -89,8 +89,18 @@ export function SettingsSidebar({ onClose }: SettingsSidebarProps) {
                             }}
                         />
                     </div>
+                    
                     {/* TODO: Implementar botón + la lógica para exportar los datos */}
-                    <div style={{ margin: "12px" }}>
+
+                    <div className={styles.row}>
+                        <div>
+                            <div className={styles.rowLabel}>
+                                Cuenta por defecto
+                            </div>
+                            <div className={styles.rowDesc}>
+                                Elige la cuenta que se usará por defecto para nuevas transacciones
+                            </div>
+                        </div>
                         <select
                             className="form-select account-select"
                             value={accountDefaultId ?? "all"}
